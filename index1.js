@@ -1,37 +1,35 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { PrismaClient } = require("@prisma/client");
 
 const app = express();
-const prisma = new PrismaClient();
-
 app.use(cors());
 app.use(express.json());
 
+// TEST
 app.get("/", (req, res) => {
   res.send("API çalışıyor 🚀");
 });
 
+// SAYIM (DB bağlantılı)
 app.post("/count", async (req, res) => {
-  const { urun_id, latitude, longitude } = req.body;
+  try {
+    const { PrismaClient } = require("@prisma/client");
+    const prisma = new PrismaClient();
 
-  const data = await prisma.stok_hareketleri.create({
-    data: {
-      urun_id,
-      tip: "COUNT",
-      miktar: 1,
-      latitude,
-      longitude
-    }
-  });
+    const data = await prisma.stok_hareketleri.create({
+      data: {
+        urun_id: 1,
+        tip: "COUNT",
+        miktar: 1
+      }
+    });
 
-  res.json(data);
-});
-
-app.get("/map", async (req, res) => {
-  const data = await prisma.stok_hareketleri.findMany();
-  res.json(data);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "DB hatası" });
+  }
 });
 
 app.listen(process.env.PORT || 3000);
