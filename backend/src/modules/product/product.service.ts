@@ -1,7 +1,9 @@
+import { Injectable } from '@nestjs/common';
 import { prisma } from '../../common/prisma.service';
 
+@Injectable()
 export class ProductService {
-  async create(data) {
+  async create(data: any) {
     return prisma.urunler.create({ data });
   }
 
