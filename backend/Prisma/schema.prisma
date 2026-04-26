@@ -1,1 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model urunler {
+  id          Int     @id @default(autoincrement())
+  urun_adi    String?
+  barkod      String?
+  stok_adedi  Int     @default(0)
+}
+
+model stok_hareketleri {
+  id        Int      @id @default(autoincrement())
+  urun_id   Int
+  tip       String
+  miktar    Int
+  latitude  Float?
+  longitude Float?
+  tarih     DateTime @default(now())
+}
+
+model iadeler {
+  id          Int      @id @default(autoincrement())
+  urun_id     Int
+  adet        Int
+  iade_tarihi DateTime @default(now())
+}
