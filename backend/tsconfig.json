@@ -1,10 +1,16 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2019",
+    "target": "es2021",
     "outDir": "./dist",
     "rootDir": "./src",
-    "strict": false,
-    "esModuleInterop": true
-  }
+    "strict": true,            // Daha güvenli kod için true yapmanız önerilir
+    "esModuleInterop": true,   // CommonJS ve ESM uyumluluğu için önemli
+    "skipLibCheck": true,      // Kütüphanelerin tip kontrolünü atlayarak hızı artırır
+    "emitDecoratorMetadata": true, // NestJS kullanıyorsanız bu şarttır
+    "experimentalDecorators": true // Decorator (örn: @Controller) desteği için şarttır
+  },
+  "include": ["src/**/*"],     // Sadece src içindeki dosyaları derle
+  "exclude": ["node_modules", "dist"]
 }
+
