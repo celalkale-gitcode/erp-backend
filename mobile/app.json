@@ -1,1 +1,6 @@
-
+{
+  "expo": {
+    "name": "ERP Scanner",
+    "slug": "erp-scanner"
+  }
+}
