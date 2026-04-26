@@ -1,144 +1,51 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model Kategoriler {
-  id           Int    @id @default(autoincrement())
-  kategoriAdi  String
-  islemTarihi  DateTime?
-  Markalar     Markalar[]
-  Urunler      Urunler[]
-}
-
-model Markalar {
-  id                  Int    @id @default(autoincrement())
-  markaAdi            String
-  olusturulmaTarihi   DateTime?
-  kategoriId          Int
-  kategori            Kategoriler @relation(fields: [kategoriId], references: [id])
-}
-
-model Magazalar {
-  id           Int @id @default(autoincrement())
-  islemTarihi  DateTime?
-  Kullanici    Kullanicilar[]
-  Urunler      Urunler[]
-}
-
-model Roller {
-  id      Int @id @default(autoincrement())
-  rolAdi  String
-}
-
-model Kullanicilar {
-  id             Int @id @default(autoincrement())
-  kullaniciAdi   String
-  sifre          String
-  rolId          Int
-  magazaId       Int
-
-  rol     Roller @relation(fields: [rolId], references: [id])
-  magaza  Magazalar @relation(fields: [magazaId], references: [id])
-}
-
-model Varyantlar {
-  id     Int @id @default(autoincrement())
-  renk   String?
-  beden  String?
-  Urunler Urunler[]
-}
 
 model Urunler {
-  id            Int @id @default(autoincrement())
-
-  kategoriId    Int
-  markaId       Int
-  magazaId      Int
-  varyantId     Int
-
-  urunAdi       String
-  modelKodu     String
-
-  barkodu       String   // ORİJİNAL
-  stokKodu      String?
-
-  stokAdedi     Int
-  kritikStok    Int
-  kritikStokDurum Boolean
-
-  paraBirimi    String?
-  kdvOrani      Float?
-  alisFiyati    Float?
-  satisFiyati   Float?
-
-  resimYolu     String?
-  islemTarihi   DateTime?
-  faturaNo      String?
-  aktifDurum    Boolean
-  kayitTarihi   DateTime
-
-  kategori  Kategoriler @relation(fields: [kategoriId], references: [id])
-  marka     Markalar    @relation(fields: [markaId], references: [id])
-  magaza    Magazalar   @relation(fields: [magazaId], references: [id])
-  varyant   Varyantlar  @relation(fields: [varyantId], references: [id])
+  id Int @id @default(autoincrement())
+  urunAdi String
+  modelKodu String
+  barkodu String
+  stokAdedi Int
+  magazaId Int
+  varyantId Int
+  kayitTarihi DateTime
 
   barkodlar UrunBarkodlari[]
 }
 
 model UrunBarkodlari {
-  id           Int @id @default(autoincrement())
-  urunId       Int
+  id Int @id @default(autoincrement())
+  urunId Int
   sistemBarkod String @unique
 
   urun Urunler @relation(fields: [urunId], references: [id])
 }
 
 model StokHareketleri {
-  id            Int @id @default(autoincrement())
-  urunId        Int
-  tip           String
-  miktar        Int
-  oncekiStok    Int
-  sonrakiStok   Int
-  kullaniciId   Int
-  magazaId      Int
-  tarih         DateTime @default(now())
-}
+  id Int @id @default(autoincrement())
+  urunId Int
+  tip String
+  miktar Int
+  oncekiStok Int
+  sonrakiStok Int
 
-model Siparisler {
-  id             Int @id @default(autoincrement())
-  urunId         Int
-  satisFiyati    Float
-  satisTarihi    DateTime
-  kullaniciId    Int
-  magazaId       Int
-  siparisAdedi   Int
-  toplamFiyati   Float
+  latitude Float?
+  longitude Float?
+  lokasyonKodu String?
+
+  tarih DateTime @default(now())
 }
 
 model Iadeler {
-  id            Int @id @default(autoincrement())
-  siparisId     Int?
-  kanal         String
-  iadeTarihi    DateTime
-  durum         String
-  kullaniciId   Int
-
-  kalemler      IadeKalemleri[]
+  id Int @id @default(autoincrement())
+  durum String
+  islenmeTarihi DateTime?
 }
 
 model IadeKalemleri {
-  id           Int @id @default(autoincrement())
-  iadeId       Int
-  urunId       Int
-  adet         Int
-  iadeTipi     String
-  stokEtkisi   Boolean
-
-  iade Iadeler @relation(fields: [iadeId], references: [id])
+  id Int @id @default(autoincrement())
+  iadeId Int
+  urunId Int
+  adet Int
+  stokEtkisi Boolean
+  islenmis Boolean @default(false)
 }
