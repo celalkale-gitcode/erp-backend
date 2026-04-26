@@ -27,8 +27,12 @@ app.post("/count", async (req, res) => {
 
     res.json(data);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "DB hatası var" });
+      console.error("FULL ERROR:", err);
+      res.status(500).json({
+        message: err.message,
+        code: err.code,
+      meta: err.meta
+    });
   }
 });
 
