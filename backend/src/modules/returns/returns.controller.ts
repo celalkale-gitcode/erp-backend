@@ -6,9 +6,7 @@ export class ReturnsController {
   constructor(private readonly service: ReturnsService) {}
 
   @Post()
-  async create(@Body() body: any) {
-    const { urun_id, adet } = body;
-
-    return this.service.addReturn(urun_id, adet);
+  create(@Body() body: any) {
+    return this.service.addReturn(body.urun_id, body.adet);
   }
 }
