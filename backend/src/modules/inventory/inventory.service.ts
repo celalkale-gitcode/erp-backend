@@ -1,24 +1,17 @@
-async updateStock(urunId: number, miktar: number, tip: string, gps?) {
+import { Injectable } from '@nestjs/common';
+import { prisma } from '../../common/prisma.service';
 
-  const urun = await this.prisma.urunler.findUnique({ where: { id: urunId } });
-
-  const yeni = urun.stokAdedi + miktar;
-
-  await this.prisma.urunler.update({
-    where: { id: urunId },
-    data: { stokAdedi: yeni }
-  });
-
-  await this.prisma.stokHareketleri.create({
-    data: {
-      urunId,
-      tip,
-      miktar,
-      oncekiStok: urun.stokAdedi,
-      sonrakiStok: yeni,
-      latitude: gps?.lat,
-      longitude: gps?.lng,
-      lokasyonKodu: gps?.lokasyon
-    }
-  });
+@Injectable()
+export class InventoryService {
+  async count(urun_id: number, latitude?: number, longitude?: number) {
+    return prisma.stok_hareketleri.create({
+      data: {
+        urun_id,
+        tip: 'COUNT',
+        miktar: 1,
+        latitude,
+        longitude
+      }
+    });
+  }
 }
