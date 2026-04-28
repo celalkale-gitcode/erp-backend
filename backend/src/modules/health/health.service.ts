@@ -15,10 +15,14 @@ export class HealthService {
         timestamp: new Date(),
       };
     } catch (e) {
+      let message = 'Unknown error';
+      if (e instanceof Error) {
+        message = e.message;
+      }
       return {
         status: 'error',
         database: 'disconnected',
-        error: e.message,
+        error: message,
       };
     }
   }
