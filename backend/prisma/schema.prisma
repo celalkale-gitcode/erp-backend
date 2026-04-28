@@ -103,6 +103,8 @@ model Urunler {
   fatura_kalemleri  FaturaKalemleri[]
   iade_kalemleri    IadeKalemleri[]
   siparisler        Siparisler[]
+
+lokasyon_urunleri LokasyonUrunleri[]   // ✅ EKLENDİ-Aynı u
 }
 
 model UrunBarkodlari {
@@ -195,7 +197,6 @@ model Siparisler {
   magaza    Magazalar?   @relation(fields: [magaza_id], references: [id])
 }
 
-
 model LokasyonUrunleri {
   id           Int @id @default(autoincrement())
   lokasyon_id  Int
@@ -204,4 +205,7 @@ model LokasyonUrunleri {
 
   lokasyon Lokasyonlar @relation(fields: [lokasyon_id], references: [id])
   urun     Urunler     @relation(fields: [urun_id], references: [id])
+
+  @@unique([lokasyon_id, urun_id, beden]) // 🔥 EKLE
 }
+
