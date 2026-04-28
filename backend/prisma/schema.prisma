@@ -36,3 +36,13 @@ model lokasyonlar {
   lokasyon_kodu  String
   aciklama       String?
 }
+
+model lokasyon_urunleri {
+  id           Int    @id @default(autoincrement())
+  lokasyon_id  BigInt
+  urun_id      Int
+  beden        String
+
+  lokasyon lokasyonlar @relation(fields: [lokasyon_id], references: [id])
+  urun     urunler     @relation(fields: [urun_id], references: [id])
+}
