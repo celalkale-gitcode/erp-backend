@@ -3,9 +3,9 @@ import { prisma } from '../../common/prisma.service';
 
 @Injectable()
 export class LocationService {
-  async createLocation(raf_kodu: string) {
+  async createLocation(lokasyon_kodu: string) {
     return prisma.lokasyonlar.create({
-      data: { raf_kodu }
+      data: { lokasyon_kodu }
     });
   }
 
