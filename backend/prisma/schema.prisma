@@ -192,3 +192,14 @@ model Siparisler {
   kullanici Kullanicilar? @relation(fields: [kullanici_id], references: [id])
   magaza    Magazalar?   @relation(fields: [magaza_id], references: [id])
 }
+
+
+model LokasyonUrunleri {
+  id           Int @id @default(autoincrement())
+  lokasyon_id  Int
+  urun_id      Int
+  beden        String?
+
+  lokasyon Lokasyonlar @relation(fields: [lokasyon_id], references: [id])
+  urun     Urunler     @relation(fields: [urun_id], references: [id])
+}
