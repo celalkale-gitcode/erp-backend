@@ -10,6 +10,11 @@ export class ProductController {
     return this.service.create(body);
   }
 
+  @Get()
+  findAll() {
+    return this.service.findAll();
+  }
+
   @Get(':barkod')
   get(@Param('barkod') barkod: string) {
     return this.service.findByBarcode(barkod);
