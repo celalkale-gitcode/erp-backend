@@ -1,17 +1,12 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 model urunler {
   id          Int     @id @default(autoincrement())
   urun_adi    String?
   barkod      String?
   stok_adedi  Int     @default(0)
+
+  stoklar     stok_hareketleri[]
+  iadeler     iadeler[]
+  lokasyonlar lokasyon_urunleri[]
 }
 
 model stok_hareketleri {
@@ -22,6 +17,8 @@ model stok_hareketleri {
   latitude  Float?
   longitude Float?
   tarih     DateTime @default(now())
+
+  urun urunler @relation(fields: [urun_id], references: [id])
 }
 
 model iadeler {
@@ -29,12 +26,16 @@ model iadeler {
   urun_id     Int
   adet        Int
   iade_tarihi DateTime @default(now())
+
+  urun urunler @relation(fields: [urun_id], references: [id])
 }
 
 model lokasyonlar {
   id             BigInt @id @default(autoincrement())
   lokasyon_kodu  String
   aciklama       String?
+
+  urunler lokasyon_urunleri[]
 }
 
 model lokasyon_urunleri {
@@ -45,4 +46,6 @@ model lokasyon_urunleri {
 
   lokasyon lokasyonlar @relation(fields: [lokasyon_id], references: [id])
   urun     urunler     @relation(fields: [urun_id], references: [id])
+
+  @@unique([lokasyon_id, urun_id, beden]) // 🔥 önemli
 }
