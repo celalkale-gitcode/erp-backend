@@ -16,9 +16,9 @@ export class LocationService {
     urun_id: number,
     beden: string,
   ) {
-    return this.prisma.lokasyon_urunleri.create({
+    return this.prisma.lokasyonUrunleri.create({ // ✅ camelCase
       data: {
-        lokasyon_id: BigInt(lokasyon_id), // 🔥 kritik
+        lokasyon_id, // ✅ Int → BigInt YOK
         urun_id,
         beden,
       },
@@ -26,9 +26,9 @@ export class LocationService {
   }
 
   async getLocationProducts(lokasyon_id: number) {
-    return this.prisma.lokasyon_urunleri.findMany({
+    return this.prisma.lokasyonUrunleri.findMany({
       where: {
-        lokasyon_id: BigInt(lokasyon_id), // 🔥 kritik
+        lokasyon_id, // ✅ BigInt YOK
       },
       include: {
         urun: true,
