@@ -114,9 +114,11 @@ model UrunBarkodlari {
 }
 
 model Lokasyonlar {
-  id            Int    @id @default(autoincrement())
-  lokasyon_kodu String?
-  aciklama      String?
+  id                Int    @id @default(autoincrement())
+  lokasyon_kodu     String?
+  aciklama          String?
+
+  lokasyon_urunleri LokasyonUrunleri[]   // ✅ EKLENDİ
 }
 
 model StokHareketleri {
