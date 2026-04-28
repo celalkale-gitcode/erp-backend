@@ -1,27 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { prisma } from '../../common/prisma.service';
+import { PrismaService } from '../../common/prisma.service';
 
 @Injectable()
 export class LocationService {
+  constructor(private prisma: PrismaService) {}
+
   async createLocation(lokasyon_kodu: string) {
-    return prisma.lokasyonlar.create({
-      data: { lokasyon_kodu }
+    return this.prisma.lokasyonlar.create({
+      data: { lokasyon_kodu },
     });
   }
 
-  async assignProduct(lokasyon_id: number, urun_id: number, beden: string) {
-    return prisma.lokasyon_urunleri.create({
+  async assignProduct(
+    lokasyon_id: number,
+    urun_id: number,
+    beden: string,
+  ) {
+    return this.prisma.lokasyon_urunleri.create({
       data: {
-        lokasyon_id,
+        lokasyon_id: BigInt(lokasyon_id), // 🔥 kritik
         urun_id,
-        beden
-      }
+        beden,
+      },
     });
   }
 
   async getLocationProducts(lokasyon_id: number) {
-    return prisma.lokasyon_urunleri.findMany({
-      where: { lokasyon_id }
+    return this.prisma.lokasyon_urunleri.findMany({
+      where: {
+        lokasyon_id: BigInt(lokasyon_id), // 🔥 kritik
+      },
+      include: {
+        urun: true,
+        lokasyon: true,
+      },
     });
   }
 }
