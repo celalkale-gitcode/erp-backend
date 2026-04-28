@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { prisma } from '../../common/prisma.service';
+import { PrismaService } from '../../common/prisma.service';
 
 @Injectable()
 export class MapService {
