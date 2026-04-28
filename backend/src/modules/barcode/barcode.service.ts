@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 @Injectable()
 export class BarcodeService {
   generateEAN13(base: string): string {
