@@ -1,26 +1,33 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { LocationService } from './location.service';
 
 @Controller('location')
 export class LocationController {
-  constructor(private readonly service: LocationService) {}
+  constructor(private locationService: LocationService) {}
 
   @Post()
-  create(@Body() body: any) {
-    return this.service.createLocation(body.raf_kodu);
+  create(@Body() body: { lokasyon_kodu: string }) {
+    return this.locationService.createLocation(body.lokasyon_kodu);
   }
 
   @Post('assign')
-  assign(@Body() body: any) {
-    return this.service.assignProduct(
+  assign(
+    @Body()
+    body: {
+      lokasyon_id: number;
+      urun_id: number;
+      beden: string;
+    },
+  ) {
+    return this.locationService.assignProduct(
       body.lokasyon_id,
       body.urun_id,
-      body.beden
+      body.beden,
     );
   }
 
   @Get(':id')
-  get(@Param('id') id: string) {
-    return this.service.getLocationProducts(Number(id));
+  getProducts(@Param('id') id: string) {
+    return this.locationService.getLocationProducts(Number(id));
   }
 }
