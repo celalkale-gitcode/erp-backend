@@ -4,7 +4,7 @@ import { PrismaService } from '../../common/prisma.service';
 @Injectable()
 export class InventoryService {
   async count(urun_id: number, latitude?: number, longitude?: number) {
-    return prisma.stok_hareketleri.create({
+    return PrismaService.stok_hareketleri.create({
       data: {
         urun_id,
         tip: 'COUNT',
