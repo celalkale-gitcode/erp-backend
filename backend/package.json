@@ -2,9 +2,9 @@
   "name": "erp-backend",
   "version": "1.0.0",
   "scripts": {
+    "build": "tsc",
     "start": "node dist/main.js",
     "start:dev": "ts-node src/main.ts",
-    "build": "tsc",
     "postinstall": "prisma generate"
   },
   "dependencies": {
