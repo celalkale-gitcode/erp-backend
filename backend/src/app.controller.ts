@@ -6,7 +6,7 @@ export class AppController {
   @Head() // Hem GET hem HEAD isteklerine cevap ver
   @HttpCode(200)
   getHello() {
-    return { status: 'ok', message: 'ERP Backend is running' };
+    return { status: 'ok', message: 'Nike ERP Backend çalışıyor.' };
   }
 }
 
