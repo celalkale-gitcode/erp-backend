@@ -8,123 +8,142 @@ datasource db {
 }
 
 model Ayarlar {
-  id                 Int     @id @default(autoincrement())
+  id                 Int      @id @default(autoincrement())
   marka_bos_pasif    Boolean?
   kategori_bos_pasif Boolean?
   otomatik_stok_dus  Boolean?
   kdv_dahil          Boolean?
+
+  @@map("ayarlar")
 }
 
 model Kategoriler {
-  id              Int       @id @default(autoincrement())
-  kategori_adi    String?
-  islem_tarihi    DateTime?
+  id           Int       @id @default(autoincrement())
+  kategori_adi String?
+  islem_tarihi DateTime?
 
-  markalar        Markalar[]
-  urunler         Urunler[]
+  markalar Markalar[]
+  urunler  Urunler[]
+
+  @@map("kategoriler")
 }
 
 model Markalar {
-  id                    Int      @id @default(autoincrement())
-  marka_adi             String?
-  olusturulma_tarihi    DateTime?
-  kategori_id           Int?
+  id                 Int      @id @default(autoincrement())
+  marka_adi          String?
+  olusturulma_tarihi DateTime?
+  kategori_id        Int?
 
-  kategori              Kategoriler? @relation(fields: [kategori_id], references: [id])
-  urunler               Urunler[]
+  kategori Kategoriler? @relation(fields: [kategori_id], references: [id])
+  urunler  Urunler[]
+
+  @@map("markalar")
 }
 
 model Magazalar {
-  id            Int      @id @default(autoincrement())
-  islem_tarihi  DateTime?
+  id           Int      @id @default(autoincrement())
+  islem_tarihi DateTime?
 
-  kullanicilar  Kullanicilar[]
-  urunler       Urunler[]
-  siparisler    Siparisler[]
+  kullanicilar Kullanicilar[]
+  urunler      Urunler[]
+  siparisler   Siparisler[]
+
+  @@map("magazalar")
 }
 
 model Roller {
-  id        Int    @id @default(autoincrement())
-  rol_adi   String?
+  id      Int     @id @default(autoincrement())
+  rol_adi String?
 
   kullanicilar Kullanicilar[]
+
+  @@map("roller")
 }
 
 model Kullanicilar {
-  id              Int      @id @default(autoincrement())
-  kullanici_adi   String?
-  sifre           String?
-  rol_id          Int?
-  magaza_id       Int?
+  id            Int     @id @default(autoincrement())
+  kullanici_adi String?
+  sifre         String?
+  rol_id        Int?
+  magaza_id     Int?
 
-  rol     Roller?     @relation(fields: [rol_id], references: [id])
-  magaza  Magazalar?  @relation(fields: [magaza_id], references: [id])
+  rol    Roller?    @relation(fields: [rol_id], references: [id])
+  magaza Magazalar? @relation(fields: [magaza_id], references: [id])
 
   siparisler Siparisler[]
+
+  @@map("kullanicilar")
 }
 
 model Varyantlar {
-  id      Int    @id @default(autoincrement())
-  renk    String?
-  beden   String?
+  id    Int     @id @default(autoincrement())
+  renk  String?
+  beden String?
 
   urunler Urunler[]
+
+  @@map("varyantlar")
 }
 
 model Urunler {
-  id                   Int      @id @default(autoincrement())
-  kategori_id          Int?
-  magaza_id            Int?
-  marka_id             Int?
-  varyant_id           Int?
-  urun_adi             String?
-  model_kodu           String?
-  barkodu              String?
-  stok_kodu            String?
-  stok_adedi           Int?
-  kritik_stok          Int?
-  kritik_stok_durum    Boolean?
-  para_birimi          String?
-  kdv_orani            Float?
-  alis_fiyati          Float?
-  satis_fiyati         Float?
-  resim_yolu           String?
-  fatura_no            String?
-  aktif_durum          Boolean?
-  kayit_tarihi         DateTime?
+  id                Int       @id @default(autoincrement())
+  kategori_id       Int?
+  magaza_id         Int?
+  marka_id          Int?
+  varyant_id        Int?
+  urun_adi          String?
+  model_kodu        String?
+  barkodu           String?
+  stok_kodu         String?
+  stok_adedi        Int?
+  kritik_stok       Int?
+  kritik_stok_durum Boolean?
+  para_birimi       String?
+  kdv_orani         Float?
+  alis_fiyati       Float?
+  satis_fiyati      Float?
+  resim_yolu        String?
+  fatura_no         String?
+  aktif_durum       Boolean?
+  kayit_tarihi      DateTime?
 
-  kategori   Kategoriler? @relation(fields: [kategori_id], references: [id])
-  marka      Markalar?    @relation(fields: [marka_id], references: [id])
-  magaza     Magazalar?   @relation(fields: [magaza_id], references: [id])
-  varyant    Varyantlar?  @relation(fields: [varyant_id], references: [id])
+  kategori Kategoriler? @relation(fields: [kategori_id], references: [id])
+  marka    Markalar?    @relation(fields: [marka_id], references: [id])
+  magaza   Magazalar?   @relation(fields: [magaza_id], references: [id])
+  varyant  Varyantlar?  @relation(fields: [varyant_id], references: [id])
 
   barkodlar         UrunBarkodlari[]
   stok_hareketleri  StokHareketleri[]
   fatura_kalemleri  FaturaKalemleri[]
   iade_kalemleri    IadeKalemleri[]
   siparisler        Siparisler[]
+  lokasyon_urunleri LokasyonUrunleri[]
 
-lokasyon_urunleri LokasyonUrunleri[]   // ✅ EKLENDİ-Aynı u
+  @@map("urunler")
 }
 
 model UrunBarkodlari {
-  id            Int    @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   urun_id       Int?
   sistem_barkod String? @unique
 
   urun Urunler? @relation(fields: [urun_id], references: [id])
+
+  @@map("urun_barkodlari")
 }
 
 model Lokasyonlar {
-  id                Int    @id @default(autoincrement())
-  lokasyon_kodu     String?
-  aciklama          String?
+  id            Int     @id @default(autoincrement())
+  lokasyon_kodu String?
+  aciklama      String?
 
-  lokasyon_urunleri LokasyonUrunleri[]   // ✅ EKLENDİ
+  lokasyon_urunleri LokasyonUrunleri[]
+
+  @@map("lokasyonlar")
 }
 
 model StokHareketleri {
-  id            Int      @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   urun_id       Int?
   tip           String?
   miktar        Int?
@@ -136,42 +155,50 @@ model StokHareketleri {
   tarih         DateTime?
 
   urun Urunler? @relation(fields: [urun_id], references: [id])
+
+  @@map("stok_hareketleri")
 }
 
 model Faturalar {
-  id             Int      @id @default(autoincrement())
-  fatura_tarihi  DateTime?
-  fatura_no      String?
-  tedarikci_id   Int?
-  fatura_tutari  Float?
-  islem_tarihi   DateTime?
+  id            Int       @id @default(autoincrement())
+  fatura_tarihi DateTime?
+  fatura_no     String?
+  tedarikci_id  Int?
+  fatura_tutari Float?
+  islem_tarihi  DateTime?
 
   kalemler FaturaKalemleri[]
+
+  @@map("faturalar")
 }
 
 model FaturaKalemleri {
-  id            Int      @id @default(autoincrement())
-  fatura_id     Int?
-  urun_id       Int?
-  alis_fiyati   Float?
-  adet          Int?
-  fatura_no     String?
-  islem_tarihi  DateTime?
+  id           Int       @id @default(autoincrement())
+  fatura_id    Int?
+  urun_id      Int?
+  alis_fiyati  Float?
+  adet         Int?
+  fatura_no    String?
+  islem_tarihi DateTime?
 
   fatura Faturalar? @relation(fields: [fatura_id], references: [id])
   urun   Urunler?   @relation(fields: [urun_id], references: [id])
+
+  @@map("fatura_kalemleri")
 }
 
 model Iadeler {
-  id            Int      @id @default(autoincrement())
-  durum         String?
-  islem_tarihi  DateTime?
+  id           Int       @id @default(autoincrement())
+  durum        String?
+  islem_tarihi DateTime?
 
   kalemler IadeKalemleri[]
+
+  @@map("iadeler")
 }
 
 model IadeKalemleri {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   iade_id     Int?
   urun_id     Int?
   adet        Int?
@@ -180,32 +207,38 @@ model IadeKalemleri {
 
   iade Iadeler? @relation(fields: [iade_id], references: [id])
   urun Urunler? @relation(fields: [urun_id], references: [id])
+
+  @@map("iade_kalemleri")
 }
 
 model Siparisler {
-  id             Int      @id @default(autoincrement())
-  urun_id        Int?
-  satis_fiyati   Float?
-  satis_tarihi   DateTime?
-  kullanici_id   Int?
-  magaza_id      Int?
-  siparis_adedi  Int?
-  toplam_fiyati  Float?
+  id            Int       @id @default(autoincrement())
+  urun_id       Int?
+  satis_fiyati  Float?
+  satis_tarihi  DateTime?
+  kullanici_id  Int?
+  magaza_id     Int?
+  siparis_adedi Int?
+  toplam_fiyati Float?
 
-  urun      Urunler?     @relation(fields: [urun_id], references: [id])
+  urun      Urunler?      @relation(fields: [urun_id], references: [id])
   kullanici Kullanicilar? @relation(fields: [kullanici_id], references: [id])
-  magaza    Magazalar?   @relation(fields: [magaza_id], references: [id])
+  magaza    Magazalar?    @relation(fields: [magaza_id], references: [id])
+
+  @@map("siparisler")
 }
 
 model LokasyonUrunleri {
-  id           Int @id @default(autoincrement())
-  lokasyon_id  Int
-  urun_id      Int
-  beden        String?
+  id          Int     @id @default(autoincrement())
+  lokasyon_id Int
+  urun_id     Int
+  beden       String?
 
   lokasyon Lokasyonlar @relation(fields: [lokasyon_id], references: [id])
   urun     Urunler     @relation(fields: [urun_id], references: [id])
 
-  @@unique([lokasyon_id, urun_id, beden]) // 🔥 EKLE
+  @@unique([lokasyon_id, urun_id, beden])
+  @@map("lokasyon_urunleri")
 }
+
 
